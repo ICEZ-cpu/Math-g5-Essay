@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Grade 5 Mathematics - Interactive SA1 Review Essay Quiz (25 Questions)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Base & Offline Graceful Fallback Styles */
+        *, *::before, *::after { box-sizing: border-box; }
+        html, body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8fafc;
+            color: #1e293b;
+            overflow-x: hidden;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in { animation: fadeIn 0.35s ease-out forwards; }
+
+        /* Mobile Touch & Interaction Enhancements */
+        button, input, textarea {
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+        svg {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Offline Fallback Layout Classes */
+        .fallback-header {
+            background: linear-gradient(135deg, #4338ca, #7e22ce, #db2777);
+            color: #ffffff;
+        }
+        .fallback-sticky-bar {
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .quiz-card {
+            background: #ffffff;
+            border-radius: 1rem;
+            border: 1px solid #e2e8f0;
+            padding: 1.25rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .essay-box {
+            width: 100%;
+            min-height: 76px;
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+            border: 1px solid #cbd5e1;
+            background: #f8fafc;
+            font-family: inherit;
+            font-size: 0.95rem;
+            resize: vertical;
+            transition: all 0.15s ease;
+        }
+        .essay-box:focus {
+            outline: none;
+            border-color: #6366f1;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+        }
+        .final-input {
+            width: 100%;
+            min-height: 46px;
+            padding: 0.65rem 1rem;
+            border-radius: 0.75rem;
+            border: 1.5px solid #cbd5e1;
+            background: #ffffff;
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.15s ease;
+        }
+        .final-input:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+        }
+        .input-correct {
+            border: 2px solid #10b981 !important;
+            background-color: #ecfdf5 !important;
+            color: #065f46 !important;
+        }
+        .input-wrong {
+            border: 2px solid #f43f5e !important;
+            background-color: #fff1f2 !important;
+            color: #9f1239 !important;
+        }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col overflow-x-hidden">
+
+    <!-- Header Banner -->
+    <header class="fallback-header bg-gradient-to-r from-indigo-700 via-purple-700 to-pink-600 text-white shadow-lg">
+        <div class="max-w-4xl mx-auto px-4 py-5 sm:py-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div class="w-full md:w-auto">
+                <span class="inline-block bg-white/20 text-[11px] sm:text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">
+                    Wellington Intelligence School 2026/2027
+                </span>
+                <h1 class="text-xl sm:text-2xl md:text-3xl font-extrabold mt-1.5 tracking-tight leading-snug">
+                    Grade 5 Mathematics - SA1 Review Essay Quiz
+                </h1>
+                <p class="text-indigo-100 text-xs sm:text-sm mt-0.5">
+                    Chapters 5–8 Summary Exercise • 25 Open-Ended Essay Questions (Instant Check)
+                </p>
+            </div>
+            <div class="w-full md:w-auto flex flex-col sm:flex-row sm:items-center gap-2 bg-white/15 p-3 rounded-xl backdrop-blur-md border border-white/25">
+                <label for="studentName" class="text-xs font-semibold text-indigo-100 whitespace-nowrap">
+                    Student Name:
+                </label>
+                <input
+                    type="text"
+                    id="studentName"
+                    placeholder="Enter your name"
+                    autocomplete="name"
+                    class="w-full sm:w-48 bg-white/20 text-white placeholder-indigo-200 text-base sm:text-sm px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-white border border-white/30"
+                >
+            </div>
+        </div>
+    </header>
+
+    <!-- Sticky Progress, Timer & Submit Bar -->
+    <div class="fallback-sticky-bar sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm">
+        <div class="max-w-4xl mx-auto px-3 sm:px-4 py-2.5 flex items-center justify-between gap-2 sm:gap-4">
+            <!-- Left: Progress & Live Score -->
+            <div class="flex items-center gap-3 sm:gap-5">
+                <div>
+                    <span class="text-[10px] sm:text-xs text-slate-500 block font-medium leading-tight">Checked</span>
+                    <span id="progressText" class="text-sm sm:text-base font-extrabold text-indigo-600">0 / 25</span>
+                </div>
+                <div class="hidden md:block w-28 bg-slate-200 rounded-full h-2 overflow-hidden">
+                    <div id="progressBar" class="bg-indigo-600 h-2 rounded-full transition-all duration-300 w-0"></div>
+                </div>
+                <div class="border-l border-slate-200 pl-3 sm:pl-4">
+                    <span class="text-[10px] sm:text-xs text-slate-500 block font-medium leading-tight">Score</span>
+                    <span id="liveScore" class="text-sm sm:text-base font-extrabold text-emerald-600">0 pts</span>
+                </div>
+            </div>
+
+            <!-- Right: Timer & Submit Button -->
+            <div class="flex items-center gap-2 sm:gap-3">
+                <div class="flex items-center gap-1.5 bg-slate-100 px-2.5 py-1.5 rounded-lg border border-slate-200">
+                    <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <span id="timer" class="text-xs sm:text-sm font-bold font-mono text-slate-700">00:00</span>
+                </div>
+                <button
+                    onclick="submitQuiz()"
+                    class="min-h-[40px] sm:min-h-[42px] bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 active:scale-95 text-white font-bold text-xs sm:text-sm px-3.5 sm:px-5 py-2 rounded-xl shadow-md transition flex items-center gap-1.5 shrink-0"
+                >
+                    <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <span>Submit</span>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Progress Bar -->
+        <div class="w-full bg-slate-100 h-1 md:hidden">
+            <div id="mobileProgressBar" class="bg-indigo-600 h-1 transition-all duration-300 w-0"></div>
+        </div>
+    </div>
+
+    <!-- Main Quiz Container -->
+    <main class="max-w-4xl mx-auto px-3 sm:px-4 py-5 sm:py-8 flex-grow w-full space-y-5 sm:space-y-7" id="quizContainer">
+        <!-- Questions injected dynamically by JavaScript -->
+    </main>
+
+    <!-- Bottom Submit Call-to-Action -->
+    <div class="max-w-4xl mx-auto px-3 sm:px-4 pb-6 w-full">
+        <button
+            onclick="submitQuiz()"
+            class="w-full min-h-[52px] bg-gradient-to-r from-indigo-600 via-purple-600 to-emerald-600 hover:opacity-95 active:scale-[0.99] text-white font-extrabold text-base py-3.5 px-6 rounded-2xl shadow-lg transition flex items-center justify-center gap-2"
+        >
+            <span>Finish & View Final Score</span>
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-6 px-4 text-center text-xs mt-auto border-t border-slate-800">
+        <p>© 2026/2027 Wellington Intelligence School • Grade 5 Mathematics SA1 Review Essay Module</p>
+    </footer>
+
+    <!-- Results Modal -->
+    <div id="resultsModal" class="fixed inset-0 bg-slate-900/75 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4 hidden animate-fade-in">
+        <div class="bg-white rounded-2xl sm:rounded-3xl shadow-2xl max-w-2xl w-full p-5 sm:p-8 overflow-y-auto max-h-[90vh] border border-slate-100">
+            <div class="text-center">
+                <div id="modalBadge" class="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-emerald-100 text-emerald-600 text-2xl sm:text-3xl font-extrabold mb-3 shadow-inner">
+                    🏆
+                </div>
+                <h2 id="modalTitle" class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Essay Quiz Completed!</h2>
+                <p id="modalStudent" class="text-slate-500 mt-1 font-medium text-xs sm:text-sm">Great effort!</p>
+            </div>
+
+            <div class="grid grid-cols-3 gap-2 sm:gap-4 my-5 sm:my-7 text-center">
+                <div class="bg-slate-50 p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-slate-100">
+                    <span class="text-[10px] sm:text-xs text-slate-400 uppercase font-semibold block">Score</span>
+                    <span id="finalScore" class="text-lg sm:text-2xl font-black text-indigo-600 mt-0.5 block">0/25</span>
+                </div>
+                <div class="bg-slate-50 p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-slate-100">
+                    <span class="text-[10px] sm:text-xs text-slate-400 uppercase font-semibold block">Percentage</span>
+                    <span id="finalPercentage" class="text-lg sm:text-2xl font-black text-emerald-600 mt-0.5 block">0%</span>
+                </div>
+                <div class="bg-slate-50 p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-slate-100">
+                    <span class="text-[10px] sm:text-xs text-slate-400 uppercase font-semibold block">Grade</span>
+                    <span id="finalGrade" class="text-lg sm:text-2xl font-black text-purple-600 mt-0.5 block">A*</span>
+                </div>
+            </div>
+
+            <div class="mb-5">
+                <h3 class="font-bold text-slate-800 mb-2.5 text-xs sm:text-sm uppercase tracking-wider">Question Review Summary</h3>
+                <div id="reviewList" class="space-y-2 max-h-52 sm:max-h-60 overflow-y-auto pr-1 text-xs sm:text-sm">
+                    <!-- Detailed review list injected here -->
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-2.5 sm:gap-4 pt-4 border-t border-slate-100">
+                <button onclick="closeModal()" class="w-full sm:flex-1 min-h-[48px] bg-slate-100 hover:bg-slate-200 active:scale-98 text-slate-700 font-bold py-3 px-5 rounded-xl transition">
+                    Review Working & Solutions
+                </button>
+                <button onclick="resetQuiz()" class="w-full sm:flex-1 min-h-[48px] bg-indigo-600 hover:bg-indigo-700 active:scale-98 text-white font-bold py-3 px-5 rounded-xl shadow-lg transition">
+                    Retake Quiz
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Message Box Modal -->
+    <div id="messageModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl shadow-xl max-w-sm w-full p-6 text-center border border-slate-100 animate-fade-in">
+            <div id="msgIcon" class="text-4xl mb-3">⚠️</div>
+            <h3 id="msgTitle" class="text-lg font-bold text-slate-900 mb-1">Notice</h3>
+            <p id="msgText" class="text-sm text-slate-600 mb-6">Message details here.</p>
+            <button onclick="closeMessage()" class="w-full min-h-[48px] bg-indigo-600 hover:bg-indigo-700 active:scale-98 text-white font-semibold py-2.5 rounded-xl transition">OK</button>
+        </div>
+    </div>
+
+    <script>
+        // Essay Quiz Data: 25 Questions with updated numbers and direct per-question checking
+        const questions = [
+            {
+                id: 1,
+                number: "Q1",
+                topic: "Ratio",
+                text: "Melissa had some stickers and game cards in the ratio 4 : 7. She had 84 game cards. How many fewer stickers did she have than game cards?",
+                svg: `<svg viewBox="0 0 320 90" class="w-full max-w-md mx-auto bg-indigo-50/50 rounded-xl p-2 border border-indigo-100">
+                    <text x="12" y="25" font-size="11" font-weight="bold" fill="#4f46e5">Stickers (4 units):</text>
+                    <rect x="125" y="12" width="96" height="18" fill="#818cf8" rx="4"/>
+                    <text x="12" y="55" font-size="11" font-weight="bold" fill="#4f46e5">Game Cards (7 units):</text>
+                    <rect x="125" y="42" width="168" height="18" fill="#c084fc" rx="4"/>
+                    <text x="125" y="78" font-size="10" fill="#64748b">7 units = 84 game cards</text>
+                </svg>`,
+                unitLabel: "stickers",
+                acceptedAnswers: ["36", "36 stickers"],
+                displayAnswer: "36",
+                explanation: "7 units = 84 game cards → 1 unit = 84 ÷ 7 = 12. Stickers = 4 units = 4 × 12 = 48. Fewer stickers = 84 − 48 = 36."
+            },
+            {
+                id: 2,
+                number: "Q2",
+                topic: "Area of Triangle",
+                text: "Find the area of triangle XYZ given base XZ = 54 cm and perpendicular height = 27 cm.",
+                svg: `<svg viewBox="0 0 300 115" class="w-full max-w-md mx-auto bg-emerald-50/50 rounded-xl p-2 border border-emerald-100">
+                    <polygon points="150,15 280,95 20,95" fill="#a7f3d0" stroke="#059669" stroke-width="2"/>
+                    <line x1="150" y1="15" x2="150" y2="95" stroke="#047857" stroke-dasharray="4" stroke-width="2"/>
+                    <text x="155" y="60" font-size="12" font-weight="bold" fill="#047857">27 cm</text>
+                    <text x="135" y="109" font-size="12" font-weight="bold" fill="#047857">54 cm</text>
+                </svg>`,
+                unitLabel: "cm²",
+                acceptedAnswers: ["729", "729 cm2", "729 cm²", "729 sq cm"],
+                displayAnswer: "729 cm²",
+                explanation: "Area of triangle = ½ × base × height = ½ × 54 cm × 27 cm = 27 × 27 = 729 cm²."
+            },
+            {
+                id: 3,
+                number: "Q3",
+                topic: "Volume",
+                text: "Find the volume of the liquid in the rectangular tank (length = 15 cm, breadth = 9 cm, total height = 20 cm, liquid height = 12 cm).",
+                svg: `<svg viewBox="0 0 240 120" class="w-full max-w-sm mx-auto bg-blue-50/50 rounded-xl p-2 border border-blue-100">
+                    <path d="M40,30 L140,10 L200,40 L100,60 Z" fill="#93c5fd" stroke="#2563eb" stroke-width="1.5"/>
+                    <path d="M40,30 L40,90 L100,110 L100,60 Z" fill="#60a5fa" stroke="#2563eb" stroke-width="1.5"/>
+                    <path d="M100,60 L200,40 L200,100 L100,110 Z" fill="#3b82f6" stroke="#2563eb" stroke-width="1.5"/>
+                    <text x="115" y="80" font-size="12" font-weight="bold" fill="white">Height 12 cm</text>
+                </svg>`,
+                unitLabel: "cm³",
+                acceptedAnswers: ["1620", "1,620", "1620 cm3", "1620 cm²", "1620 cm³", "1,620 cm3", "1,620 cm³"],
+                displayAnswer: "1,620 cm³",
+                explanation: "Volume of liquid = length × breadth × height of liquid = 15 cm × 9 cm × 12 cm = 1,620 cm³."
+            },
+            {
+                id: 4,
+                number: "Q4",
+                topic: "Volume & Capacity",
+                text: "Aisyah filled a rectangular tank measuring 50 cm by 30 cm by 24 cm with water. What was the volume of water when it is 5/8 filled? Give your answer in litres.",
+                svg: `<svg viewBox="0 0 260 100" class="w-full max-w-sm mx-auto bg-teal-50/50 rounded-xl p-2 border border-teal-100">
+                    <rect x="45" y="15" width="160" height="70" fill="none" stroke="#0d9488" stroke-width="2" rx="4"/>
+                    <rect x="45" y="38" width="160" height="47" fill="#ccfbf1" opacity="0.85"/>
+                    <text x="98" y="65" font-size="11" font-weight="bold" fill="#0f766e">5/8 Filled</text>
+                    <text x="212" y="55" font-size="10" font-weight="bold" fill="#0f766e">24 cm</text>
+                </svg>`,
+                unitLabel: "litres",
+                acceptedAnswers: ["22.5", "22.5 l", "22.5 litres", "22.5 liters", "22 1/2", "22 1/2 litres"],
+                displayAnswer: "22.5 litres",
+                explanation: "Total capacity = 50 × 30 × 24 = 36,000 cm³. Water volume = 5/8 × 36,000 = 22,500 cm³ = 22.5 litres."
+            },
+            {
+                id: 5,
+                number: "Q5",
+                topic: "Ratio & Models",
+                text: "The ratio of Connie's score to Huda's score was 7 : 10. Dan scored 42 marks more than Connie and 15 marks more than Huda. What was Connie's score?",
+                svg: `<svg viewBox="0 0 300 90" class="w-full max-w-md mx-auto bg-purple-50/50 rounded-xl p-2 border border-purple-100">
+                    <text x="15" y="25" font-size="11" font-weight="bold" fill="#7c3aed">Connie (7u):</text>
+                    <rect x="120" y="14" width="95" height="16" fill="#a78bfa" rx="3"/>
+                    <text x="15" y="60" font-size="11" font-weight="bold" fill="#7c3aed">Huda (10u):</text>
+                    <rect x="120" y="48" width="136" height="16" fill="#c4b5fd" rx="3"/>
+                </svg>`,
+                unitLabel: "marks",
+                acceptedAnswers: ["63", "63 marks"],
+                displayAnswer: "63 marks",
+                explanation: "Let Connie = 7u, Huda = 10u. Dan = 7u + 42 = 10u + 15 → 3u = 27 → 1u = 9. Connie = 7 × 9 = 63 marks."
+            },
+            {
+                id: 6,
+                number: "Q6",
+                topic: "Geometry / Cubes",
+                text: "A solid figure is made up of 1-cm cubes stacked in 3 layers: 9 cubes on the bottom layer, 4 cubes on the middle layer, and 2 cubes on the top layer. How many cubes are there in total?",
+                svg: `<svg viewBox="0 0 220 100" class="w-full max-w-sm mx-auto bg-amber-50/50 rounded-xl p-2 border border-amber-100">
+                    <polygon points="110,10 140,25 110,40 80,25" fill="#f59e0b" stroke="#b45309"/>
+                    <polygon points="80,25 110,40 110,70 80,55" fill="#fbbf24" stroke="#b45309"/>
+                    <polygon points="110,40 140,25 140,55 110,70" fill="#d97706" stroke="#b45309"/>
+                    <text x="45" y="88" font-size="11" font-weight="bold" fill="#b45309">Layer counts: 9 + 4 + 2</text>
+                </svg>`,
+                unitLabel: "cubes",
+                acceptedAnswers: ["15", "15 cubes"],
+                displayAnswer: "15 cubes",
+                explanation: "Counting layer by layer from bottom to top: Bottom layer = 9 cubes, middle layer = 4 cubes, top layer = 2 cubes. Total = 9 + 4 + 2 = 15 cubes."
+            },
+            {
+                id: 7,
+                number: "Q7",
+                topic: "Area of Region",
+                text: "PQRS is a rectangle measuring 20 cm by 15 cm. An unshaded triangle at the top has base 20 cm and height 6 cm, and another unshaded triangle at the right has base 15 cm and height 8 cm. Find the area of the remaining shaded region.",
+                svg: `<svg viewBox="0 0 240 115" class="w-full max-w-sm mx-auto bg-rose-50/50 rounded-xl p-2 border border-rose-100">
+                    <rect x="40" y="10" width="150" height="90" fill="#fda4af" stroke="#e11d48" stroke-width="2"/>
+                    <polygon points="40,10 190,10 115,46" fill="white" stroke="#e11d48" stroke-width="1"/>
+                    <polygon points="190,10 190,100 130,55" fill="white" stroke="#e11d48" stroke-width="1"/>
+                    <text x="52" y="82" font-size="11" font-weight="bold" fill="#be123c">Shaded Region</text>
+                </svg>`,
+                unitLabel: "cm²",
+                acceptedAnswers: ["180", "180 cm2", "180 cm²", "180 sq cm"],
+                displayAnswer: "180 cm²",
+                explanation: "Area of rectangle = 20 × 15 = 300 cm². Unshaded triangles: Top = ½ × 20 × 6 = 60 cm², Right = ½ × 15 × 8 = 60 cm². Shaded area = 300 − 60 − 60 = 180 cm²."
+            },
+            {
+                id: 8,
+                number: "Q8",
+                topic: "Composite Area",
+                text: "The figure is made up of a rectangle (32 cm by 14 cm) and an unshaded triangle inside with base 18 cm and height 10 cm. Find the area of the shaded part.",
+                svg: `<svg viewBox="0 0 260 110" class="w-full max-w-sm mx-auto bg-sky-50/50 rounded-xl p-2 border border-sky-100">
+                    <rect x="20" y="20" width="220" height="70" fill="#bae6fd" stroke="#0284c7" stroke-width="2"/>
+                    <polygon points="50,90 180,90 180,40" fill="white" stroke="#0284c7" stroke-dasharray="3"/>
+                    <text x="85" y="65" font-size="11" font-weight="bold" fill="#0369a1">Unshaded Triangle</text>
+                </svg>`,
+                unitLabel: "cm²",
+                acceptedAnswers: ["358", "358 cm2", "358 cm²", "358 sq cm"],
+                displayAnswer: "358 cm²",
+                explanation: "Area of rectangle = 32 × 14 = 448 cm². Area of triangle = ½ × 18 × 10 = 90 cm². Shaded area = 448 − 90 = 358 cm²."
+            },
+            {
+                id: 9,
+                number: "Q9",
+                topic: "Ratio & Area",
+                text: "The area of a large square is 100 cm². The ratio of the area of the large square to the area of a small square is 25 : 9. Find the area of the small square.",
+                svg: `<svg viewBox="0 0 260 90" class="w-full max-w-sm mx-auto bg-orange-50/50 rounded-xl p-2 border border-orange-100">
+                    <rect x="30" y="15" width="60" height="60" fill="#fb923c" rx="4"/>
+                    <text x="36" y="50" font-size="11" font-weight="bold" fill="white">100 cm²</text>
+                    <rect x="145" y="25" width="45" height="45" fill="#fdba74" rx="4"/>
+                    <text x="150" y="52" font-size="11" font-weight="bold" fill="#9a3412">9 units</text>
+                    <text x="100" y="50" font-size="15" font-weight="bold" fill="#ea580c">25 : 9</text>
+                </svg>`,
+                unitLabel: "cm²",
+                acceptedAnswers: ["36", "36 cm2", "36 cm²", "36 sq cm"],
+                displayAnswer: "36 cm²",
+                explanation: "25 units = 100 cm², so 1 unit = 100 ÷ 25 = 4 cm². Area of small square = 9 units = 9 × 4 = 36 cm²."
+            },
+            {
+                id: 10,
+                number: "Q10",
+                topic: "Visualizing Solids",
+                text: "A cube structure viewed from the front has 4 columns of heights 4, 3, 2, and 1 unit cubes from left to right. How many unit squares are visible in its 2D Front View?",
+                svg: `<svg viewBox="0 0 220 100" class="w-full max-w-sm mx-auto bg-yellow-50/50 rounded-xl p-2 border border-yellow-100">
+                    <rect x="55" y="15" width="20" height="70" fill="#eab308"/>
+                    <rect x="80" y="32" width="20" height="53" fill="#ca8a04"/>
+                    <rect x="105" y="50" width="20" height="35" fill="#a16207"/>
+                    <rect x="130" y="67" width="20" height="18" fill="#854d0e"/>
+                    <text x="58" y="96" font-size="10" font-weight="bold" fill="#854d0e">Heights: 4, 3, 2, 1</text>
+                </svg>`,
+                unitLabel: "unit squares",
+                acceptedAnswers: ["10", "10 squares", "10 unit squares"],
+                displayAnswer: "10 unit squares",
+                explanation: "Adding the column heights visible in the 2D Front View: 4 + 3 + 2 + 1 = 10 unit squares."
+            },
+            {
+                id: 11,
+                number: "Q11",
+                topic: "Area / Trapezoid",
+                text: "A rectangular piece of paper was folded to form a trapezoidal shape with parallel base 42 cm, top parallel edge 14 cm, and perpendicular height 20 cm. Find the area.",
+                svg: `<svg viewBox="0 0 260 100" class="w-full max-w-sm mx-auto bg-cyan-50/50 rounded-xl p-2 border border-cyan-100">
+                    <polygon points="60,20 200,20 220,80 40,80" fill="#a5f3fc" stroke="#0891b2" stroke-width="2"/>
+                    <text x="95" y="55" font-size="12" font-weight="bold" fill="#0e7490">Trapezoid Fold</text>
+                </svg>`,
+                unitLabel: "cm²",
+                acceptedAnswers: ["560", "560 cm2", "560 cm²", "560 sq cm"],
+                displayAnswer: "560 cm²",
+                explanation: "Area of trapezoid = ½ × (a + b) × h = ½ × (42 + 14) × 20 = ½ × 56 × 20 = 560 cm²."
+            },
+            {
+                id: 12,
+                number: "Q12",
+                topic: "Ratio Simplification",
+                text: "Express the ratio 72 : 54 : 36 in its simplest form.",
+                svg: `<svg viewBox="0 0 240 70" class="w-full max-w-sm mx-auto bg-violet-50/50 rounded-xl p-2 border border-violet-100">
+                    <text x="30" y="42" font-size="16" font-weight="bold" fill="#7c3aed">72 : 54 : 36</text>
+                    <text x="160" y="42" font-size="16" font-weight="bold" fill="#4c1d95">⇒ ?</text>
+                </svg>`,
+                unitLabel: "ratio",
+                acceptedAnswers: ["4:3:2", "4 : 3 : 2"],
+                displayAnswer: "4 : 3 : 2",
+                explanation: "Divide each number by their Highest Common Factor (18): 72 ÷ 18 = 4, 54 ÷ 18 = 3, 36 ÷ 18 = 2. Simplest form is 4 : 3 : 2."
+            },
+            {
+                id: 13,
+                number: "Q13",
+                topic: "Ratio Word Problem",
+                text: "The ages of three siblings, Leon, Kelly, and Jack are in the ratio 2 : 5 : 8. The sum of their ages is 60 years. How old is Jack?",
+                svg: `<svg viewBox="0 0 300 85" class="w-full max-w-md mx-auto bg-pink-50/50 rounded-xl p-2 border border-pink-100">
+                    <text x="15" y="30" font-size="11" font-weight="bold" fill="#db2777">Leon : Kelly : Jack = 2 : 5 : 8</text>
+                    <text x="15" y="58" font-size="11" font-weight="bold" fill="#db2777">Total Units = 15 units = 60 years</text>
+                </svg>`,
+                unitLabel: "years",
+                acceptedAnswers: ["32", "32 years", "32 yrs"],
+                displayAnswer: "32 years",
+                explanation: "Total units = 2 + 5 + 8 = 15 units. 15 units = 60 years → 1 unit = 4 years. Jack = 8 units = 8 × 4 = 32 years."
+            },
+            {
+                id: 14,
+                number: "Q14",
+                topic: "Cuboid Volume",
+                text: "The length of a cuboid is 18 cm. Its length is twice its breadth and its height is 11 cm. Find the volume of the cuboid.",
+                svg: `<svg viewBox="0 0 220 100" class="w-full max-w-sm mx-auto bg-emerald-50/50 rounded-xl p-2 border border-emerald-100">
+                    <rect x="45" y="25" width="130" height="55" fill="#a7f3d0" stroke="#059669" stroke-width="2" rx="4"/>
+                    <text x="65" y="57" font-size="12" font-weight="bold" fill="#047857">18 × 9 × 11 cm³</text>
+                </svg>`,
+                unitLabel: "cm³",
+                acceptedAnswers: ["1782", "1,782", "1782 cm3", "1782 cm³", "1,782 cm3", "1,782 cm³"],
+                displayAnswer: "1,782 cm³",
+                explanation: "Length = 18 cm. Breadth = 18 ÷ 2 = 9 cm. Height = 11 cm. Volume = 18 × 9 × 11 = 1,782 cm³."
+            },
+            {
+                id: 15,
+                number: "Q15",
+                topic: "Water Tank Capacity",
+                text: "A rectangular tank (40 × 30 × 20 cm) is 3/8 filled with water. Water is poured into an empty cubical tank of edge 20 cm until full. How much water is left in the rectangular tank (in ml)?",
+                svg: `<svg viewBox="0 0 260 90" class="w-full max-w-sm mx-auto bg-blue-50/50 rounded-xl p-2 border border-blue-100">
+                    <rect x="30" y="20" width="80" height="55" fill="#93c5fd" rx="4"/>
+                    <text x="45" y="52" font-size="10" font-weight="bold" fill="white">3/8 Tank</text>
+                    <rect x="150" y="20" width="65" height="55" fill="#60a5fa" rx="4"/>
+                    <text x="157" y="52" font-size="10" font-weight="bold" fill="white">Cube 20cm</text>
+                </svg>`,
+                unitLabel: "ml",
+                acceptedAnswers: ["1000", "1,000", "1000 ml", "1,000 ml", "1000 cm3", "1000 cm³"],
+                displayAnswer: "1,000 ml",
+                explanation: "Initial water = 3/8 × (40 × 30 × 20) = 9,000 cm³. Cubical tank capacity = 20³ = 8,000 cm³. Water left = 9,000 − 8,000 = 1,000 cm³ = 1,000 ml."
+            },
+            {
+                id: 16,
+                number: "Q16",
+                topic: "Composite Squares",
+                text: "In the figure, ABFG and CDEF are squares placed side by side with GF = 10 cm and FE = 16 cm. Triangle BDG connects the top-left of the small square, top-right of the large square, and bottom-right of the large square. Find the area of shaded triangle BDG.",
+                svg: `<svg viewBox="0 0 240 100" class="w-full max-w-sm mx-auto bg-indigo-50/50 rounded-xl p-2 border border-indigo-100">
+                    <rect x="45" y="35" width="45" height="45" fill="#a5b4fc" stroke="#4f46e5" stroke-width="2"/>
+                    <rect x="90" y="10" width="70" height="70" fill="#818cf8" stroke="#4f46e5" stroke-width="2"/>
+                    <polygon points="45,35 160,10 160,80" fill="#4338ca" opacity="0.75"/>
+                    <text x="115" y="50" font-size="11" font-weight="bold" fill="white">BDG</text>
+                </svg>`,
+                unitLabel: "cm²",
+                acceptedAnswers: ["208", "208 cm2", "208 cm²", "208 sq cm"],
+                displayAnswer: "208 cm²",
+                explanation: "Base DG = 16 cm, perpendicular height from B to line DE = 10 + 16 = 26 cm. Area of triangle BDG = ½ × 16 × 26 = 208 cm²."
+            },
+            {
+                id: 17,
+                number: "Q17",
+                topic: "Composite Geometry",
+                text: "A composite figure consists of rectangle CDEF (length 28 cm, breadth 15 cm) and two right-angled triangles attached to it: triangle ABE (base 16 cm, height 12 cm) and triangle BCF (base 15 cm, height 8 cm). Find the total area of the figure.",
+                svg: `<svg viewBox="0 0 240 100" class="w-full max-w-sm mx-auto bg-teal-50/50 rounded-xl p-2 border border-teal-100">
+                    <polygon points="120,10 190,50 120,90 50,50" fill="#99f6e4" stroke="#0d9488" stroke-width="2"/>
+                    <text x="85" y="55" font-size="11" font-weight="bold" fill="#0f766e">Composite Fig</text>
+                </svg>`,
+                unitLabel: "cm²",
+                acceptedAnswers: ["576", "576 cm2", "576 cm²", "576 sq cm"],
+                displayAnswer: "576 cm²",
+                explanation: "Area of rectangle = 28 × 15 = 420 cm². Area of triangle ABE = ½ × 16 × 12 = 96 cm². Area of triangle BCF = ½ × 15 × 8 = 60 cm². Total area = 420 + 96 + 60 = 576 cm²."
+            },
+            {
+                id: 18,
+                number: "Q18",
+                topic: "Fractions & Word Problems",
+                text: "Mr Park had 180 bottles of juice. He sold 1/4 in the first hour and 2/5 in the second hour. How many bottles did he sell altogether in the two hours?",
+                svg: `<svg viewBox="0 0 260 75" class="w-full max-w-sm mx-auto bg-amber-50/50 rounded-xl p-2 border border-amber-100">
+                    <text x="30" y="32" font-size="12" font-weight="bold" fill="#b45309">1/4 + 2/5 = 13/20</text>
+                    <text x="30" y="56" font-size="12" font-weight="bold" fill="#b45309">Total = 180 bottles</text>
+                </svg>`,
+                unitLabel: "bottles",
+                acceptedAnswers: ["117", "117 bottles"],
+                displayAnswer: "117 bottles",
+                explanation: "Total fraction sold = 1/4 + 2/5 = 5/20 + 8/20 = 13/20. Total bottles sold = 13/20 × 180 = 117 bottles."
+            },
+            {
+                id: 19,
+                number: "Q19",
+                topic: "Area of Triangle",
+                text: "Find the area of triangle ABC with base = 26 cm and perpendicular height = 19 cm.",
+                svg: `<svg viewBox="0 0 240 105" class="w-full max-w-sm mx-auto bg-rose-50/50 rounded-xl p-2 border border-rose-100">
+                    <polygon points="120,15 210,85 30,85" fill="#fecdd3" stroke="#e11d48" stroke-width="2"/>
+                    <line x1="120" y1="15" x2="120" y2="85" stroke="#be123c" stroke-dasharray="3"/>
+                    <text x="125" y="55" font-size="11" font-weight="bold" fill="#be123c">19 cm</text>
+                    <text x="108" y="99" font-size="11" font-weight="bold" fill="#be123c">26 cm</text>
+                </svg>`,
+                unitLabel: "cm²",
+                acceptedAnswers: ["247", "247 cm2", "247 cm²", "247 sq cm"],
+                displayAnswer: "247 cm²",
+                explanation: "Area of triangle = ½ × base × height = ½ × 26 cm × 19 cm = 13 × 19 = 247 cm²."
+            },
+            {
+                id: 20,
+                number: "Q20",
+                topic: "Overlapping Shapes & Ratio",
+                text: "Rectangle A overlaps Square B. The ratio of Area of Rectangle A : Shaded overlapping area : Area of Square B = 7 : 2 : 5. Given Area of Rectangle A = 56 cm², find the total area of the whole figure.",
+                svg: `<svg viewBox="0 0 240 100" class="w-full max-w-sm mx-auto bg-purple-50/50 rounded-xl p-2 border border-purple-100">
+                    <rect x="40" y="20" width="90" height="60" fill="#d8b4fe" opacity="0.8"/>
+                    <rect x="100" y="30" width="80" height="50" fill="#c084fc" opacity="0.8"/>
+                    <rect x="100" y="30" width="30" height="50" fill="#7e22ce" opacity="0.7"/>
+                    <text x="65" y="55" font-size="11" font-weight="bold" fill="#4c1d95">A</text>
+                    <text x="150" y="60" font-size="11" font-weight="bold" fill="#4c1d95">B</text>
+                </svg>`,
+                unitLabel: "cm²",
+                acceptedAnswers: ["80", "80 cm2", "80 cm²", "80 sq cm"],
+                displayAnswer: "80 cm²",
+                explanation: "7 units = 56 cm² → 1 unit = 8 cm². Area of Square B = 5 units = 40 cm². Shaded overlap = 2 units = 16 cm². Whole figure area = 56 + 40 − 16 = 80 cm²."
+            },
+            {
+                id: 21,
+                number: "Q21",
+                topic: "Triangle Base & Height",
+                text: "In right-angled triangle MNP, MN is perpendicular to NP. Name the base corresponding to the height MN.",
+                svg: `<svg viewBox="0 0 240 90" class="w-full max-w-sm mx-auto bg-sky-50/50 rounded-xl p-2 border border-sky-100">
+                    <polygon points="70,15 190,75 70,75" fill="#e0f2fe" stroke="#0284c7" stroke-width="2"/>
+                    <rect x="70" y="65" width="10" height="10" fill="none" stroke="#0369a1" stroke-width="1.5"/>
+                    <text x="45" y="48" font-size="11" font-weight="bold" fill="#0369a1">MN</text>
+                    <text x="125" y="88" font-size="11" font-weight="bold" fill="#0369a1">NP</text>
+                </svg>`,
+                unitLabel: "segment",
+                acceptedAnswers: ["np", "pn"],
+                displayAnswer: "NP",
+                explanation: "Since MN is perpendicular to NP at vertex N, the base corresponding to height MN is NP."
+            },
+            {
+                id: 22,
+                number: "Q22",
+                topic: "Triangle Base & Height",
+                text: "In triangle XYZ, line segment XW is drawn from vertex X perpendicular to side YZ at point W. Name the height corresponding to base YZ.",
+                svg: `<svg viewBox="0 0 240 90" class="w-full max-w-sm mx-auto bg-orange-50/50 rounded-xl p-2 border border-orange-100">
+                    <polygon points="60,75 180,75 140,20" fill="#ffedd5" stroke="#ea580c" stroke-width="2"/>
+                    <line x1="140" y1="20" x2="140" y2="75" stroke="#c2410c" stroke-dasharray="3"/>
+                    <text x="145" y="50" font-size="11" font-weight="bold" fill="#c2410c">XW</text>
+                    <text x="105" y="88" font-size="11" font-weight="bold" fill="#c2410c">YZ</text>
+                </svg>`,
+                unitLabel: "segment",
+                acceptedAnswers: ["xw", "wx"],
+                displayAnswer: "XW",
+                explanation: "For base YZ, the perpendicular line segment from the opposite vertex X is XW."
+            },
+            {
+                id: 23,
+                number: "Q23",
+                topic: "Composite Figure Area",
+                text: "ABDE is made up of square ACDF and two identical triangles ABC and DEF attached on opposite sides. AF = 16 cm and the height of each triangle is 7 cm. Find the total area of the figure.",
+                svg: `<svg viewBox="0 0 240 100" class="w-full max-w-sm mx-auto bg-emerald-50/50 rounded-xl p-2 border border-emerald-100">
+                    <rect x="85" y="25" width="50" height="50" fill="#a7f3d0" stroke="#059669" stroke-width="2"/>
+                    <polygon points="85,25 110,5 135,25" fill="#6ee7b7" stroke="#059669" stroke-width="1.5"/>
+                    <polygon points="85,75 110,95 135,75" fill="#6ee7b7" stroke="#059669" stroke-width="1.5"/>
+                </svg>`,
+                unitLabel: "cm²",
+                acceptedAnswers: ["368", "368 cm2", "368 cm²", "368 sq cm"],
+                displayAnswer: "368 cm²",
+                explanation: "Area of square ACDF = 16 × 16 = 256 cm². Area of each triangle = ½ × 16 × 7 = 56 cm². Total area = 256 + 56 + 56 = 368 cm²."
+            },
+            {
+                id: 24,
+                number: "Q24",
+                topic: "Complex Area",
+                text: "A composite polygon is formed by a central rectangle measuring 24 cm by 14 cm with two right-angled triangles on its sides, each having base 14 cm and height 6 cm. Find the total area of the polygon.",
+                svg: `<svg viewBox="0 0 240 100" class="w-full max-w-sm mx-auto bg-slate-100 rounded-xl p-2 border border-slate-200">
+                    <polygon points="80,15 160,15 180,50 160,85 80,85 60,50" fill="#cbd5e1" stroke="#475569" stroke-width="2"/>
+                    <text x="98" y="55" font-size="11" font-weight="bold" fill="#334155">Polygon</text>
+                </svg>`,
+                unitLabel: "cm²",
+                acceptedAnswers: ["420", "420 cm2", "420 cm²", "420 sq cm"],
+                displayAnswer: "420 cm²",
+                explanation: "Area of central rectangle = 24 × 14 = 336 cm². Area of each side triangle = ½ × 14 × 6 = 42 cm². Total area = 336 + 42 + 42 = 420 cm²."
+            },
+            {
+                id: 25,
+                number: "Q25",
+                topic: "Shaded Triangle Area",
+                text: "In triangle ABC, base BC = 22 cm and perpendicular height AE = 9 cm. An unshaded inner triangle ADE shares the same height AE = 9 cm with base DE = 8 cm. Find the area of the shaded part.",
+                svg: `<svg viewBox="0 0 240 100" class="w-full max-w-sm mx-auto bg-rose-50/50 rounded-xl p-2 border border-rose-100">
+                    <polygon points="120,10 210,85 30,85" fill="#fda4af" stroke="#e11d48" stroke-width="2"/>
+                    <polygon points="120,10 155,85 95,85" fill="white" stroke="#e11d48" stroke-width="1"/>
+                    <text x="103" y="65" font-size="9" font-weight="bold" fill="#be123c">Unshaded</text>
+                </svg>`,
+                unitLabel: "cm²",
+                acceptedAnswers: ["63", "63 cm2", "63 cm²", "63 sq cm"],
+                displayAnswer: "63 cm²",
+                explanation: "Total area of triangle ABC = ½ × 22 × 9 = 99 cm². Area of unshaded triangle ADE = ½ × 8 × 9 = 36 cm². Shaded area = 99 − 36 = 63 cm²."
+            }
+        ];
+
+        let userWorking = {};
+        let userFinalAnswers = {};
+        let checkedQuestions = {}; // Tracks { qId: boolean (isCorrect) }
+        let secondsElapsed = 0;
+        let timerInterval = null;
+        let isSubmitted = false;
+
+        window.onload = function() {
+            renderQuestions();
+            startTimer();
+        };
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                if (!isSubmitted) {
+                    secondsElapsed++;
+                    const mins = Math.floor(secondsElapsed / 60).toString().padStart(2, '0');
+                    const secs = (secondsElapsed % 60).toString().padStart(2, '0');
+                    document.getElementById('timer').innerText = `${mins}:${secs}`;
+                }
+            }, 1000);
+        }
+
+        function normalizeAnswer(str) {
+            return str
+                .toLowerCase()
+                .trim()
+                .replace(/\s+/g, ' ')
+                .replace(/,/g, '')
+                .replace(/\s*:\s*/g, ':');
+        }
+
+        function checkAnswer(q, rawVal) {
+            const cleaned = normalizeAnswer(rawVal);
+            if (!cleaned) return false;
+            return q.acceptedAnswers.some(ans => normalizeAnswer(ans) === cleaned);
+        }
+
+        function renderQuestions() {
+            const container = document.getElementById('quizContainer');
+            container.innerHTML = '';
+
+            questions.forEach((q) => {
+                const card = document.createElement('div');
+                card.className = "quiz-card bg-white rounded-2xl shadow-sm border border-slate-200/80 p-4 sm:p-6 transition hover:shadow-md";
+                card.id = `question-card-${q.id}`;
+
+                card.innerHTML = `
+                    <div class="flex flex-wrap justify-between items-center gap-2 mb-3">
+                        <div class="flex items-center gap-2">
+                            <span class="bg-indigo-100 text-indigo-700 font-extrabold text-xs px-3 py-1 rounded-full">${q.number}</span>
+                            <span class="bg-slate-100 text-slate-600 font-semibold text-xs px-2.5 py-1 rounded-full">${q.topic}</span>
+                        </div>
+                        <span id="status-${q.id}" class="text-xs font-semibold"></span>
+                    </div>
+                    <p class="text-slate-800 font-medium text-sm sm:text-base mb-4 leading-relaxed">${q.text}</p>
+                    <div class="mb-4 overflow-hidden">${q.svg}</div>
+
+                    <!-- Essay Step-by-Step Working Area -->
+                    <div class="space-y-3">
+                        <div>
+                            <label for="work-${q.id}" class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">
+                                Step-by-Step Working / Explanation:
+                            </label>
+                            <textarea
+                                id="work-${q.id}"
+                                oninput="handleWorkingInput(${q.id}, this.value)"
+                                placeholder="Write your steps and calculations here..."
+                                class="essay-box text-slate-800"
+                            ></textarea>
+                        </div>
+
+                        <!-- Final Answer Box + Direct Check Button -->
+                        <div class="flex flex-col sm:flex-row sm:items-center gap-2.5 bg-slate-50 p-3 rounded-xl border border-slate-200">
+                            <label for="ans-${q.id}" class="text-xs sm:text-sm font-bold text-slate-700 whitespace-nowrap">
+                                Final Answer:
+                            </label>
+                            <div class="flex flex-wrap sm:flex-nowrap items-center gap-2 flex-1">
+                                <input
+                                    type="text"
+                                    id="ans-${q.id}"
+                                    oninput="handleFinalInput(${q.id}, this.value)"
+                                    onkeydown="if(event.key === 'Enter'){ event.preventDefault(); checkSingleQuestion(${q.id}); }"
+                                    placeholder="Type answer..."
+                                    class="final-input text-slate-900 flex-1 min-w-[120px]"
+                                >
+                                <span class="text-xs sm:text-sm font-bold text-slate-500 whitespace-nowrap bg-white px-3 py-2.5 rounded-lg border border-slate-200">
+                                    ${q.unitLabel}
+                                </span>
+                                <button
+                                    type="button"
+                                    id="check-btn-${q.id}"
+                                    onclick="checkSingleQuestion(${q.id})"
+                                    class="w-full sm:w-auto min-h-[46px] bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white font-bold text-xs sm:text-sm px-4 py-2.5 rounded-xl shadow-sm transition flex items-center justify-center gap-1.5 shrink-0"
+                                >
+                                    <span>Check Answer</span>
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Direct Correction & Model Solution Banner -->
+                    <div id="explanation-${q.id}" class="hidden mt-4 p-3.5 sm:p-4 rounded-xl text-xs sm:text-sm border leading-relaxed animate-fade-in">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-1.5">
+                            <span id="feedback-title-${q.id}" class="font-bold">💡 Step-by-Step Solution:</span>
+                            <span class="text-xs font-extrabold bg-emerald-600 text-white px-2.5 py-0.5 rounded-full">Correct Answer: ${q.displayAnswer}</span>
+                        </div>
+                        <p class="text-slate-700">${q.explanation}</p>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function handleWorkingInput(qId, val) {
+            userWorking[qId] = val;
+        }
+
+        function handleFinalInput(qId, val) {
+            if (val.trim() === "") {
+                delete userFinalAnswers[qId];
+            } else {
+                userFinalAnswers[qId] = val;
+            }
+        }
+
+        function checkSingleQuestion(qId, silent = false) {
+            const q = questions.find(item => item.id === qId);
+            const ansInput = document.getElementById(`ans-${qId}`);
+            const rawVal = ansInput.value;
+
+            if (!rawVal.trim() && !silent) {
+                showMessage(`Please type your final answer for ${q.number} before checking!`, "✍️", "Enter an Answer");
+                ansInput.focus();
+                return;
+            }
+
+            userFinalAnswers[qId] = rawVal;
+            const isCorrect = checkAnswer(q, rawVal);
+            checkedQuestions[qId] = isCorrect;
+
+            const statusTag = document.getElementById(`status-${qId}`);
+            const explanationDiv = document.getElementById(`explanation-${qId}`);
+            const feedbackTitle = document.getElementById(`feedback-title-${qId}`);
+            const checkBtn = document.getElementById(`check-btn-${qId}`);
+
+            // Reset input state classes
+            ansInput.classList.remove('input-correct', 'input-wrong');
+            explanationDiv.classList.remove('hidden', 'bg-emerald-50/80', 'border-emerald-200', 'bg-rose-50/80', 'border-rose-200');
+
+            if (isCorrect) {
+                ansInput.classList.add('input-correct');
+                statusTag.innerHTML = '<span class="text-emerald-700 bg-emerald-100 px-2.5 py-0.5 rounded-full font-bold">Correct ✓</span>';
+                explanationDiv.classList.add('bg-emerald-50/80', 'border-emerald-200');
+                feedbackTitle.innerHTML = '<span class="text-emerald-800">✅ Correct! Step-by-Step Solution:</span>';
+                checkBtn.innerHTML = '<span>Checked ✓</span>';
+                checkBtn.className = "w-full sm:w-auto min-h-[46px] bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-bold text-xs sm:text-sm px-4 py-2.5 rounded-xl shadow-sm transition flex items-center justify-center gap-1.5 shrink-0";
+            } else {
+                ansInput.classList.add('input-wrong');
+                statusTag.innerHTML = '<span class="text-rose-700 bg-rose-100 px-2.5 py-0.5 rounded-full font-bold">Incorrect ✗</span>';
+                explanationDiv.classList.add('bg-rose-50/80', 'border-rose-200');
+                feedbackTitle.innerHTML = '<span class="text-rose-800">❌ Needs Correction — Review Solution Below:</span>';
+                checkBtn.innerHTML = '<span>Re-Check</span>';
+                checkBtn.className = "w-full sm:w-auto min-h-[46px] bg-rose-600 hover:bg-rose-700 active:scale-95 text-white font-bold text-xs sm:text-sm px-4 py-2.5 rounded-xl shadow-sm transition flex items-center justify-center gap-1.5 shrink-0";
+            }
+
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const checkedIds = Object.keys(checkedQuestions);
+            const checkedCount = checkedIds.length;
+            document.getElementById('progressText').innerText = `${checkedCount} / 25`;
+            const percent = (checkedCount / 25) * 100;
+
+            const desktopBar = document.getElementById('progressBar');
+            const mobileBar = document.getElementById('mobileProgressBar');
+            if (desktopBar) desktopBar.style.width = `${percent}%`;
+            if (mobileBar) mobileBar.style.width = `${percent}%`;
+
+            let currentScore = 0;
+            checkedIds.forEach(qId => {
+                if (checkedQuestions[qId] === true) {
+                    currentScore++;
+                }
+            });
+            document.getElementById('liveScore').innerText = `${currentScore} pts`;
+        }
+
+        function submitQuiz() {
+            const hasAnyInput = Object.values(userFinalAnswers).some(v => v && v.trim() !== "") || Object.keys(checkedQuestions).length > 0;
+            if (!hasAnyInput) {
+                showMessage("Please answer and check at least one question before submitting!", "⚠️", "Notice");
+                return;
+            }
+
+            isSubmitted = true;
+            clearInterval(timerInterval);
+
+            // Auto-check all remaining questions so every question gets direct correction
+            questions.forEach(q => {
+                checkSingleQuestion(q.id, true);
+            });
+
+            let finalScoreCount = 0;
+            const reviewListHtml = questions.map(q => {
+                const rawAns = userFinalAnswers[q.id] || "";
+                const isCorrect = checkedQuestions[q.id] === true;
+                if (isCorrect) finalScoreCount++;
+
+                const displayUser = rawAns.trim() ? rawAns.trim() : "—";
+                return `
+                    <div class="flex items-center justify-between gap-2 p-2.5 sm:p-3 rounded-xl bg-slate-50 border ${isCorrect ? 'border-emerald-200' : 'border-rose-200'}">
+                        <div class="min-w-0">
+                            <span class="font-bold text-slate-800 block sm:inline">${q.number} <span class="text-slate-500 font-normal">(${q.topic})</span></span>
+                            <span class="text-xs text-slate-500 block sm:inline sm:ml-2">You: <b>${displayUser}</b> • Ans: <b>${q.displayAnswer}</b></span>
+                        </div>
+                        <span class="text-xs font-bold px-2.5 py-1 rounded-full shrink-0 ${isCorrect ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'}">
+                            ${isCorrect ? '✓' : '✗'}
+                        </span>
+                    </div>
+                `;
+            }).join('');
+
+            const percentage = Math.round((finalScoreCount / 25) * 100);
+            let grade = 'C';
+            if (percentage >= 85) grade = 'A*';
+            else if (percentage >= 75) grade = 'A';
+            else if (percentage >= 65) grade = 'B';
+            else if (percentage >= 50) grade = 'C';
+            else grade = 'D';
+
+            const studentName = document.getElementById('studentName').value.trim() || "Student";
+
+            document.getElementById('modalStudent').innerText = `Great effort completing the essay quiz, ${studentName}!`;
+            document.getElementById('finalScore').innerText = `${finalScoreCount} / 25`;
+            document.getElementById('finalPercentage').innerText = `${percentage}%`;
+            document.getElementById('finalGrade').innerText = grade;
+            document.getElementById('reviewList').innerHTML = reviewListHtml;
+
+            document.getElementById('resultsModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('resultsModal').classList.add('hidden');
+        }
+
+        function resetQuiz() {
+            userWorking = {};
+            userFinalAnswers = {};
+            checkedQuestions = {};
+            isSubmitted = false;
+            secondsElapsed = 0;
+            document.getElementById('liveScore').innerText = "0 pts";
+            closeModal();
+            renderQuestions();
+            updateProgress();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            if (timerInterval) clearInterval(timerInterval);
+            startTimer();
+        }
+
+        function showMessage(text, icon = "⚠️", title = "Notice") {
+            document.getElementById('msgIcon').innerText = icon;
+            document.getElementById('msgTitle').innerText = title;
+            document.getElementById('msgText').innerText = text;
+            document.getElementById('messageModal').classList.remove('hidden');
+        }
+
+        function closeMessage() {
+            document.getElementById('messageModal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
